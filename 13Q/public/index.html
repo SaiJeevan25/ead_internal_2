@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Greet API</title>
+</head>
+<body>
+  <h2>Greet Someone</h2>
+  <input type="text" id="name" placeholder="Enter name">
+  <input type="text" id="title" placeholder="Enter title (optional)">
+  <button onclick="sendGreet()">Greet</button>
+
+  <p id="result"></p>
+
+  <script>
+    function sendGreet() {
+      const name = document.getElementById('name').value;
+      const title = document.getElementById('title').value;
+
+      let url = `http://localhost:3000/greet/${name}`;
+      if (title) url += `?title=${title}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('result').innerText = data.greeting;
+        })
+        .catch(err => console.error(err));
+    }
+  </script>
+</body>
+</html>
