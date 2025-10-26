@@ -1,51 +1,42 @@
-// Import dependencies
-const express = require("express");
+import express from 'express';
+
 const app = express();
+const port = 3000;
 
-// Middleware to parse JSON body
-app.use(express.json());
-
-// In-memory user storage
+// In-memory users array
 const users = [];
 
-// POST /register route
-app.post("/register", (req, res) => {
+app.use(express.json());
+
+// POST /register
+app.post('/register', (req, res) => {
   const { username, password } = req.body;
 
-  // Basic validation
   if (!username || !password) {
-    return res.status(400).json({
-      success: false,
-      message: "Username and password are required.",
-    });
+    return res.status(400).json({ message: 'Username and password are required' });
   }
 
-  // Check for duplicate usernames
-  const userExists = users.find((u) => u.username === username);
-  if (userExists) {
-    return res.status(409).json({
-      success: false,
-      message: "Username already exists. Please choose another.",
-    });
+  if (users.find(user => user.username === username)) {
+    return res.status(409).json({ message: 'Username already exists' });
   }
 
-  // Store user
   users.push({ username, password });
 
-  // Respond with success
+  console.log('Registered users:', users);
+
   res.status(201).json({
-    success: true,
-    message: "User registered successfully!",
-    totalUsers: users.length,
-    registeredUser: { username },
+    message: 'Registration successful',
+    user: { username }
   });
 });
 
-// Optional: Get all users (for debugging)
-app.get("/users", (req, res) => {
-  res.json(users);
+// ✅ GET /users route to return all registered users
+app.get('/users', (req, res) => {
+  // Only send usernames, not passwords
+  const safeUsers = users.map(user => ({ username: user.username }));
+  res.json(safeUsers);
 });
 
-// Start server
-const PORT = 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
