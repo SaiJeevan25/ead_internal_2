@@ -1,7 +1,5 @@
-import express
-
-const express = require("express");
-const cors = require("cors"); // Only if you want frontend to call this API
+import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
