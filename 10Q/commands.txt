@@ -1,0 +1,32 @@
+# 1️⃣ Connect to your MongoDB Atlas cluster or local instance
+# Replace <username>, <password>, <cluster-url>
+mongosh "mongodb+srv://<username>:<password>@<cluster-url>/BookstoreDB"
+
+# 2️⃣ Switch to the database
+use BookstoreDB
+
+# 3️⃣ Insert at least 7 books with varying categories and stock
+db.BookInventory.insertMany([
+  { title: "Dune", author: "Frank Herbert", category: "Science Fiction", availableCopies: 5 },
+  { title: "Neuromancer", author: "William Gibson", category: "Science Fiction", availableCopies: 3 },
+  { title: "Foundation", author: "Isaac Asimov", category: "Science Fiction", availableCopies: 7 },
+  { title: "1984", author: "George Orwell", category: "Dystopian", availableCopies: 4 },
+  { title: "Brave New World", author: "Aldous Huxley", category: "Dystopian", availableCopies: 2 },
+  { title: "The Hobbit", author: "J.R.R. Tolkien", category: "Fantasy", availableCopies: 6 },
+  { title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", category: "Fantasy", availableCopies: 8 }
+])
+
+# 4️⃣ Retrieve all books in the "Science Fiction" category
+db.BookInventory.find({ category: "Science Fiction" })
+
+# 5️⃣ Decrease the availableCopies by 1 for a book when purchased (example: "Dune")
+db.BookInventory.updateOne(
+  { title: "Dune" },
+  { $inc: { availableCopies: -1 } }
+)
+
+# 6️⃣ Delete all books that are out of stock (availableCopies = 0)
+db.BookInventory.deleteMany({ availableCopies: 0 })
+
+# 7️⃣ Display all remaining books
+db.BookInventory.find()
