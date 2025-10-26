@@ -1,0 +1,37 @@
+# 1️⃣ Connect to MongoDB Atlas (replace <username>, <cluster-url>, <dbname>)
+mongosh "mongodb+srv://<username>:<password>@<cluster-url>/BookstoreDB"
+
+# 2️⃣ Switch to your database
+use BookstoreDB
+
+# 3️⃣ Create and insert 5 sample book documents
+db.BookInventory.insertMany([
+  { title: "The Great Gatsby", author: "F. Scott Fitzgerald", category: "Fiction", availableCopies: 10, price: 12.99 },
+  { title: "To Kill a Mockingbird", author: "Harper Lee", category: "Fiction", availableCopies: 7, price: 15.50 },
+  { title: "A Brief History of Time", author: "Stephen Hawking", category: "Science", availableCopies: 5, price: 20.00 },
+  { title: "The Selfish Gene", author: "Richard Dawkins", category: "Science", availableCopies: 8, price: 18.75 },
+  { title: "Clean Code", author: "Robert C. Martin", category: "Programming", availableCopies: 12, price: 30.00 }
+])
+
+# 4️⃣ Calculate total number of books available per category
+db.BookInventory.aggregate([
+  {
+    $group: {
+      _id: "$category",
+      totalBooks: { $sum: "$availableCopies" }
+    }
+  }
+])
+
+# 5️⃣ Calculate average price of books per category
+db.BookInventory.aggregate([
+  {
+    $group: {
+      _id: "$category",
+      avgPrice: { $avg: "$price" }
+    }
+  }
+])
+
+# 6️⃣ List all books in a specific category (e.g., "Fiction") sorted by price descending
+db.BookInventory.find({ category: "Fiction" }).sort({ price: -1 })
