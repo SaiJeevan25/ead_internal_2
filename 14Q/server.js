@@ -1,7 +1,11 @@
 const express = require('express');
 const app = express();
+const cors = require("cors");
 const PORT = 3000;
 const path = require('path');
+
+// Allow CORS for all origins
+app.use(cors());
 
 // Serve frontend files from the "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
