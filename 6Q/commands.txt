@@ -1,0 +1,32 @@
+# 1️⃣ Connect to MongoDB Atlas (replace <username>, <cluster-url>, and <dbname>)
+mongosh "mongodb+srv://<username>:<password>@<cluster-url>/CollegeDB"
+
+# 2️⃣ Show all databases
+show dbs
+
+# 3️⃣ Switch to CollegeDB
+use CollegeDB
+
+# 4️⃣ Show collections
+show collections
+
+# 5️⃣ Insert 5 student records
+db.Students.insertMany([
+  { name: "John Doe", rollNumber: 101, marks: 85, department: "CS" },
+  { name: "Jane Smith", rollNumber: 102, marks: 92, department: "EE" },
+  { name: "Bob Johnson", rollNumber: 103, marks: 78, department: "ME" },
+  { name: "Alice Brown", rollNumber: 104, marks: 35, department: "CS" },
+  { name: "Charlie Wilson", rollNumber: 105, marks: 88, department: "EE" }
+])
+
+# 6️⃣ Retrieve all students sorted by marks descending
+db.Students.find().sort({ marks: -1 })
+
+# 7️⃣ Update marks of a student by roll number (example: rollNumber 103)
+db.Students.updateOne({ rollNumber: 103 }, { $set: { marks: 95 } })
+
+# 8️⃣ Delete students whose marks are below 40
+db.Students.deleteMany({ marks: { $lt: 40 } })
+
+# 9️⃣ Display all remaining student records
+db.Students.find().pretty()
