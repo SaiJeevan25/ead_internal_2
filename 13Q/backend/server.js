@@ -1,29 +1,12 @@
-import express from "express";
-import cors from "cors";
+import express from "express"
+import cors from "cors"
 
 const app = express();
-const port = 3000;
+app.use(cors());
 
-app.use(cors());       
-app.use(express.json());
-app.use(express.static("public"));
-
-// /greet/:name route
 app.get("/greet/:name", (req, res) => {
-    const name = req.params.name;
-    const title = req.query.title;
-
-    if (!name) {
-        return res.status(400).json({ message: "Name is required in URL." });
-    }
-
-    const greeting = title
-        ? `Hello, ${title} ${name}!`
-        : `Hello, ${name}!`;
-
-    res.json({ greeting });
+  const title = req.query.title ? req.query.title + " " : "";
+  res.json({ message: `Hello, ${title}${req.params.name}!` });
 });
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+app.listen(3000, () => console.log("Server running on 3001"));
